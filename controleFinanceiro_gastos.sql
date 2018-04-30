@@ -64,8 +64,8 @@ begin
 
 	if (new.valor > 0) then 
 		set gastoTB =  new.valor; 
-		select total into totalTBusuario from usuario where id = new.usuario; #usuario; 
-		update usuario set total = totalTBusuario - gastoTB where id = new.usuario; #new.usuario; 
+		select total into totalTBusuario from usuarios where id = new.usuario; #usuario; 
+		update usuarios set total = totalTBusuario - gastoTB where id = new.usuario; #new.usuario; 
 	end if;  
 
 end */;;
@@ -94,15 +94,15 @@ for each row
         declare totUsuario float(10,2) default(0);
         declare totalUsuarioComValorAdicionandoValorAntigo float(10,2) default(0);
         
-        select total into totUsuario from usuario where id = old.usuario;
+        select total into totUsuario from usuarios where id = old.usuario;
         
         set valorAntigoGasto = old.valor;
         set valorAtualizadoGasto = new.valor;
         set totalUsuarioComValorAdicionandoValorAntigo = totUsuario + valorAntigoGasto;
         
         if (valorAtualizadoGasto > 0) then
-			update usuario set total = totalUsuarioComValorAdicionandoValorAntigo where id = new.usuario;
-			update usuario set total = totalUsuarioComValorAdicionandoValorAntigo - valorAtualizadoGasto where id = new.usuario; 
+			update usuarios set total = totalUsuarioComValorAdicionandoValorAntigo where id = new.usuario;
+			update usuarios set total = totalUsuarioComValorAdicionandoValorAntigo - valorAtualizadoGasto where id = new.usuario; 
         end if;
         
     end */;;
@@ -130,10 +130,10 @@ for each row
 		declare valorGastoApagado float(10,2) default(0);
         
         set valorGastoApagado = old.valor;
-		select total into tot from usuario where id = old.usuario;
+		select total into tot from usuarios where id = old.usuario;
         
         if (valorGastoApagado > 0) then
-			update usuario set total = tot + valorGastoApagado WHERE id = old.usuario;
+			update usuarios set total = tot + valorGastoApagado WHERE id = old.usuario;
         end if;
     end */;;
 DELIMITER ;

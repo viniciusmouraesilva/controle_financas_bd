@@ -93,7 +93,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `previsaoTotalMenosFuturasCompras`(id
 begin
 		declare totalDescontado float(10,2) default 0;
         
-        select usuario.total - sum(futuras_compras.valor) into totalDescontado from usuario, futuras_compras where usuario.id = futuras_compras.usuario and futuras_compras.usuario = id group by usuario.id;
+        select usuario.total - sum(futuras_compras.valor) into totalDescontado from usuarios, futuras_compras where usuarios.id = futuras_compras.usuario and futuras_compras.usuario = id group by usuarios.id;
 
         return totalDescontado;
     end ;;
@@ -126,7 +126,7 @@ begin
 		#buscar Todas as dividas Mensais
         #Pesquisa um a um como um loop;
 		declare buscarGastosFixosMensais cursor for
-			select sum(gastos_fixos_mensais.valor) total, usuario.id, usuario.total from usuario, gastos_fixos_mensais where usuario.id = gastos_fixos_mensais.usuario and gastos_fixos_mensais.dataQuePaga = day(current_date()) group by usuario.id;
+			select sum(gastos_fixos_mensais.valor) total, usuarios.id, usuarios.total from usuarios, gastos_fixos_mensais where usuarios.id = gastos_fixos_mensais.usuario and gastos_fixos_mensais.dataQuePaga = day(current_date()) group by usuarios.id;
 
         #Caso erro no Loop ainda é buscado
 		declare continue handler for sqlstate '02000' set fimLoop = 1;
@@ -142,7 +142,7 @@ begin
             
             if valorTotalGastoFixo > 0 then
                 
-                update usuario set total = usuarioTotal - valorTotalGastoFixo where id = usuarioId;
+                update usuarios set total = usuarioTotal - valorTotalGastoFixo where id = usuarioId;
                 
             end if;
             
